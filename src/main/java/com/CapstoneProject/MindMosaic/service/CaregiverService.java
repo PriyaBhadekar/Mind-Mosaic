@@ -3,9 +3,8 @@ package com.CapstoneProject.MindMosaic.service;
 import com.CapstoneProject.MindMosaic.dto.CaregiverRequestDTO;
 import com.CapstoneProject.MindMosaic.dto.CaregiverResponseDTO;
 import com.CapstoneProject.MindMosaic.entity.Caregiver;
-import com.CapstoneProject.MindMosaic.entity.Patient;
 import com.CapstoneProject.MindMosaic.repository.CaregiverRepository;
-import com.CapstoneProject.MindMosaic.repository.PatientRepository;
+import com.CapstoneProject.MindMosaic.utils.UniqueCodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +16,19 @@ public class CaregiverService {
     @Autowired
     private CaregiverRepository caregiverRepository;
 
-    @Autowired
-    private PatientRepository patientRepository;
-
-    // CREATE caregiver
+    // ✅ CREATE CAREGIVER WITH UNIQUE CODE
     public CaregiverResponseDTO createCaregiver(CaregiverRequestDTO dto) {
+
         Caregiver caregiver = new Caregiver();
         caregiver.setName(dto.getName());
         caregiver.setPhoneNumber(dto.getPhoneNumber());
         caregiver.setEmail(dto.getEmail());
         caregiver.setAddress(dto.getAddress());
+
+        // 🔑 Generate and assign unique code
+        caregiver.setUniqueCode(
+                UniqueCodeGenerator.generateCaregiverCode()
+        );
 
         Caregiver saved = caregiverRepository.save(caregiver);
 
@@ -36,11 +38,12 @@ public class CaregiverService {
         response.setPhoneNumber(saved.getPhoneNumber());
         response.setEmail(saved.getEmail());
         response.setAddress(saved.getAddress());
+        response.setUniqueCode(saved.getUniqueCode());
 
         return response;
     }
 
-    // GET all caregivers
+    // ✅ GET all caregivers
     public List<CaregiverResponseDTO> getAllCaregivers() {
         return caregiverRepository.findAll()
                 .stream()
@@ -51,13 +54,15 @@ public class CaregiverService {
                     dto.setPhoneNumber(c.getPhoneNumber());
                     dto.setEmail(c.getEmail());
                     dto.setAddress(c.getAddress());
+                    dto.setUniqueCode(c.getUniqueCode());
                     return dto;
                 })
                 .toList();
     }
 
-    // GET caregiver by ID
+    // ✅ GET caregiver by ID (FIXED)
     public CaregiverResponseDTO getCaregiverById(Long id) {
+
         Caregiver caregiver = caregiverRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Caregiver not found"));
 
@@ -67,18 +72,13 @@ public class CaregiverService {
         dto.setPhoneNumber(caregiver.getPhoneNumber());
         dto.setEmail(caregiver.getEmail());
         dto.setAddress(caregiver.getAddress());
+        dto.setUniqueCode(caregiver.getUniqueCode());
 
         return dto;
     }
 
     public void linkPatientToCaregiver(Long caregiverId, Long patientId) {
-        Caregiver caregiver = caregiverRepository.findById(caregiverId)
-                .orElseThrow(() -> new RuntimeException("Caregiver not found"));
-
-        Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new RuntimeException("Patient not found"));
-
-        patient.setCaregiver(caregiver);
-        patientRepository.save(patient);
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'linkPatientToCaregiver'");
     }
 }

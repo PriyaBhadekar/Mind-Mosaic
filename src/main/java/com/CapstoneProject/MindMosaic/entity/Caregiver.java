@@ -1,11 +1,7 @@
 package com.CapstoneProject.MindMosaic.entity;
 
-
-import java.util.List;
-
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.util.List;
 
 @Entity
@@ -21,6 +17,9 @@ public class Caregiver {
     private String email;
     private String address;
 
-    @OneToMany(mappedBy = "caregiver", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(unique = true, nullable = false)
+    private String uniqueCode;   // 🔑 UNIQUE LINKING CODE
+
+    @OneToMany(mappedBy = "caregiver", cascade = CascadeType.ALL)
     private List<Patient> patients;
 }
