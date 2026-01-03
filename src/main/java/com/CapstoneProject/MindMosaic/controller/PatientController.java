@@ -18,12 +18,22 @@ public class PatientController {
     private PatientService patientService;
 
     @PostMapping
-    public ResponseEntity<PatientResponseDTO> createPatient(@RequestBody PatientRequestDTO dto) {
+    public ResponseEntity<PatientResponseDTO> createPatient(
+            @RequestBody PatientRequestDTO dto) {
         return ResponseEntity.ok(patientService.createPatient(dto));
     }
 
     @GetMapping
     public ResponseEntity<List<PatientResponseDTO>> getAllPatients() {
         return ResponseEntity.ok(patientService.getAllPatients());
+    }
+
+    @PutMapping("/{patientId}/assign-caregiver/{caregiverId}")
+    public ResponseEntity<String> assignCaregiver(
+            @PathVariable Long patientId,
+            @PathVariable Long caregiverId) {
+
+        patientService.assignCaregiver(patientId, caregiverId);
+        return ResponseEntity.ok("Caregiver assigned successfully");
     }
 }

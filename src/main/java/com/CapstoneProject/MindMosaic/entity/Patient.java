@@ -1,6 +1,7 @@
 package com.CapstoneProject.MindMosaic.entity;
 
 // File: src/main/java/your/package/entity/Patient.java
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,5 +26,6 @@ public class Patient {
 
     @ManyToOne
     @JoinColumn(name = "caregiver_id")
+    @JsonIgnore
     private Caregiver caregiver;
 }
