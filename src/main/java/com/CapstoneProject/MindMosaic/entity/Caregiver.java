@@ -3,6 +3,8 @@ package com.CapstoneProject.MindMosaic.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,5 +25,5 @@ public class Caregiver {
 
     @OneToMany(mappedBy = "caregiver")
     @JsonIgnore
-    private List<Patient> patients;
+private List<Patient> patients = new ArrayList<>();
 }
